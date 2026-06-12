@@ -1,0 +1,70 @@
+/* ===========================================
+   Paleta de cores do sistema
+   =========================================== */
+:root {
+    --azul-principal: #1F3A5F;
+    --azul-escuro: #16293F;
+    --verde-destaque: #2EC4B6;
+    --cinza-fundo: #F4F6F8;
+    --texto-escuro: #1F2933;
+}
+
+body {
+    background-color: var(--cinza-fundo);
+    color: var(--texto-escuro);
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* ===========================================
+   Navbar
+   =========================================== */
+.custom-navbar {
+    background-color: var(--azul-principal);
+}
+
+.custom-navbar .navbar-brand {
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.custom-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.2s ease;
+}
+
+.custom-navbar .nav-link:hover {
+    color: var(--verde-destaque);
+}
+
+.custom-navbar .btn-outline-light:hover {
+    background-color: var(--verde-destaque);
+    border-color: var(--verde-destaque);
+    color: var(--azul-escuro);
+}
+
+/* ===========================================
+   Rodapé
+   =========================================== */
+.custom-footer {
+    background-color: var(--azul-escuro);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===========================================
+   Utilidades gerais
+   =========================================== */
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.btn-primary {
+    background-color: var(--azul-principal);
+    border-color: var(--azul-principal);
+}
+
+.btn-primary:hover {
+    background-color: var(--azul-escuro);
+    border-color: var(--azul-escuro);
+}
