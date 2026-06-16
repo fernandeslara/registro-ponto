@@ -16,6 +16,14 @@ $funcionarios = [
     </a>
 </div>
 
+<?php if (!empty($_SESSION['mensagem'])): ?>
+    <div class="alert alert-info">
+        <?= htmlspecialchars($_SESSION['mensagem']) ?>
+    </div>
+    <?php unset($_SESSION['mensagem']); ?>
+<?php endif; ?>
+
+
 <div class="card">
     <div class="card-body p-0">
         <div class="table-responsive">
