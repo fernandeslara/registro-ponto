@@ -1,16 +1,6 @@
 <?php
 include __DIR__ . '/../includes/header.php';
-
-// Nome do usuário para exibir na tela (cai pra um valor padrão se ainda não houver login implementado)
 $nomeExibicao = $nomeUsuario !== '' ? $nomeUsuario : 'Funcionário';
-
-// TODO: quando o banco estiver pronto, substituir esse array pelos registros
-// de ponto do dia atual, vindos do banco de dados.
-$registrosHoje = [
-    ['tipo' => 'Entrada',         'horario' => '08:01'],
-    ['tipo' => 'Início Intervalo', 'horario' => '12:00'],
-    ['tipo' => 'Fim Intervalo',    'horario' => '13:02'],
-];
 ?>
 
 <div class="row justify-content-center">
@@ -27,6 +17,9 @@ $registrosHoje = [
                 <div id="dataAtual" class="text-muted mt-1"></div>
             </div>
         </div>
+
+        <!-- Mensagem de feedback (erro ou aviso), preenchida via JavaScript -->
+        <div id="mensagemErroPonto" class="alert alert-danger d-none"></div>
 
         <!-- Botões de registro -->
         <div class="row g-3 mb-4">
@@ -52,34 +45,27 @@ $registrosHoje = [
             </div>
         </div>
 
-        <!-- Histórico do dia -->
+        <!-- Resumo do dia (vindo da API dashboard.php) -->
         <div class="card">
             <div class="card-header bg-white">
-                <strong>Registros de hoje</strong>
+                <strong>Meu ponto hoje</strong>
             </div>
             <div class="card-body p-0">
                 <table class="table table-striped mb-0">
                     <thead>
                         <tr>
-                            <th>Tipo</th>
-                            <th>Horário</th>
+                            <th>Entrada</th>
+                            <th>Início Intervalo</th>
+                            <th>Fim Intervalo</th>
+                            <th>Saída</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php if (empty($registrosHoje)): ?>
-                            <tr>
-                                <td colspan="2" class="text-center text-muted py-3">
-                                    Nenhum registro feito hoje.
-                                </td>
-                            </tr>
-                        <?php else: ?>
-                            <?php foreach ($registrosHoje as $registro): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($registro['tipo']) ?></td>
-                                    <td><?= htmlspecialchars($registro['horario']) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                    <tbody id="corpoTabelaPontoHoje">
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-3">
+                                Carregando...
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

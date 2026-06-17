@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Variáveis úteis para a navbar
 $usuarioLogado = isset($_SESSION['usuario_id']);
-$tipoUsuario   = $_SESSION['tipo'] ?? null; // ex.: 'admin' ou 'funcionario'
+$nivelAcesso   = $_SESSION['nivel_acesso'] ?? null; // 'admin' ou 'func'
 $nomeUsuario   = $_SESSION['nome'] ?? '';
 
 // Define a URL base do projeto automaticamente (funciona em qualquer subpasta do www)
@@ -17,6 +17,11 @@ if (!defined('BASE_URL')) {
     $documentRoot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
     $caminhoBase  = str_replace($documentRoot, '', $raizProjeto);
     define('BASE_URL', $caminhoBase);
+}
+
+// URL base da API (pasta api/ na raiz do projeto), usada pelas chamadas fetch no JS
+if (!defined('API_URL')) {
+    define('API_URL', BASE_URL . '/api');
 }
 ?>
 <!DOCTYPE html>
@@ -34,6 +39,12 @@ if (!defined('BASE_URL')) {
 
     <!-- CSS personalizado -->
     <link href="<?= BASE_URL ?>/css/custom.css" rel="stylesheet">
+
+    <!-- Disponibiliza a URL base da API para os scripts JS -->
+    <script>
+        window.API_URL = "<?= API_URL ?>";
+        window.BASE_URL = "<?= BASE_URL ?>";
+    </script>
 </head>
 <body>
 
@@ -53,7 +64,7 @@ if (!defined('BASE_URL')) {
 
                 <?php if ($usuarioLogado): ?>
 
-                    <?php if ($tipoUsuario === 'admin'): ?>
+                    <?php if ($nivelAcesso === 'admin'): ?>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/admin/dashboard.php">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/admin/funcionarios.php">Funcionários</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/admin/histprocp.php">Histórico</a></li>
