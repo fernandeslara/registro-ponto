@@ -17,6 +17,8 @@
 <script src="<?= BASE_URL ?>/js/login.js"></script>
 <script src="<?= BASE_URL ?>/js/funcionarios.js"></script>
 <script src="<?= BASE_URL ?>/js/dashboard.js"></script>
+<script src="<?= BASE_URL ?>/js/historico.js"></script>
+<script src="<?= BASE_URL ?>/js/relatorios_editar.js"></script>
 
 </body>
 </html>

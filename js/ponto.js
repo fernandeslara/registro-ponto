@@ -86,7 +86,7 @@ if (document.getElementById('relogio')) {
 }
 
 // ===========================================
-// Confirmação ao registrar o ponto
+// Botões de registro de ponto (registro-ponto/index.php)
 // ===========================================
 const NOMES_TIPO = {
     entrada: 'Entrada',
@@ -95,14 +95,42 @@ const NOMES_TIPO = {
     saida: 'Saída'
 };
 
-function confirmarRegistro(tipo) {
+async function confirmarRegistro(tipo) {
     const nomeTipo = NOMES_TIPO[tipo] || tipo;
     const confirmado = confirm(`Confirmar registro de ponto: ${nomeTipo}?`);
+    if (!confirmado) return;
 
-    if (confirmado) {
-        // TODO: quando o backend estiver pronto, enviar esse registro
-        // via fetch/POST para um arquivo PHP que grava no banco de dados.
-        // Por enquanto, apenas mostramos um aviso de confirmação.
-        alert(`Ponto registrado: ${nomeTipo}`);
+    const mensagemErro = document.getElementById('mensagemErroPonto');
+    mensagemErro.classList.add('d-none');
+
+    const dados = new FormData();
+    dados.append('tipo_batida', tipo);
+
+    try {
+        const resposta = await fetch(`${window.API_URL}/sistema/registrar_ponto.php`, {
+            method: 'POST',
+            body: dados,
+            credentials: 'same-origin'
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.ok) {
+            // Mostra um aviso de sucesso e recarrega o resumo do dia
+            alert(`✅ ${resultado.sucesso}\nHorário: ${resultado.horario}`);
+            carregarPontoHoje();
+        } else {
+            mensagemErro.textContent = resultado.erro || 'Erro ao registrar ponto.';
+            mensagemErro.classList.remove('d-none');
+
+            if (resposta.status === 401) {
+                setTimeout(() => {
+                    window.location.href = `${window.BASE_URL}/registro-ponto/login.php`;
+                }, 2000);
+            }
+        }
+    } catch (erro) {
+        mensagemErro.textContent = 'Não foi possível conectar ao servidor.';
+        mensagemErro.classList.remove('d-none');
     }
 }

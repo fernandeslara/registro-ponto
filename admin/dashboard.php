@@ -1,4 +1,8 @@
-<?php include __DIR__ . '/../includes/header.php'; ?>
+<?php
+require_once __DIR__ . '/../includes/auth.php';
+exigirAdmin();
+include __DIR__ . '/../includes/header.php';
+?>
 
 <h3 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h3>
 

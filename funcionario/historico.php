@@ -1,32 +1,38 @@
-<?php
-include __DIR__ . '/../includes/header.php';
-
-// TODO: substituir pelos registros reais do funcionário logado, vindos do banco
-// (filtrar por $_SESSION['usuario_id'])
-$historico = [
-    ['data' => '14/06/2026', 'entrada' => '08:01', 'inicio_intervalo' => '12:00', 'fim_intervalo' => '13:02', 'saida' => '17:58'],
-    ['data' => '13/06/2026', 'entrada' => '08:05', 'inicio_intervalo' => '12:10', 'fim_intervalo' => '13:05', 'saida' => '18:00'],
-    ['data' => '12/06/2026', 'entrada' => '07:58', 'inicio_intervalo' => '12:00', 'fim_intervalo' => '13:00', 'saida' => '17:55'],
-];
-?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0"><i class="bi bi-calendar-check"></i> Meus Pontos</h3>
 </div>
 
-<!-- Filtro por período -->
+<!-- Filtro por mês/ano -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="GET" class="row g-3 align-items-end">
+        <form id="formFiltroHistorico" class="row g-3 align-items-end">
             <div class="col-auto">
-                <label for="data_inicio" class="form-label small mb-1">De</label>
-                <input type="date" class="form-control" id="data_inicio" name="data_inicio"
-                       value="<?= htmlspecialchars($_GET['data_inicio'] ?? '') ?>">
+                <label for="mes" class="form-label small mb-1">Mês</label>
+                <select class="form-select" id="mes" name="mes">
+                    <?php
+                    $meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                              'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                    $mesAtual = (int) date('m');
+                    foreach ($meses as $i => $nomeMes):
+                        $num = $i + 1;
+                    ?>
+                        <option value="<?= $num ?>" <?= $num === $mesAtual ? 'selected' : '' ?>>
+                            <?= $nomeMes ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="col-auto">
-                <label for="data_fim" class="form-label small mb-1">Até</label>
-                <input type="date" class="form-control" id="data_fim" name="data_fim"
-                       value="<?= htmlspecialchars($_GET['data_fim'] ?? '') ?>">
+                <label for="ano" class="form-label small mb-1">Ano</label>
+                <select class="form-select" id="ano" name="ano">
+                    <?php for ($a = (int)date('Y'); $a >= 2024; $a--): ?>
+                        <option value="<?= $a ?>" <?= $a === (int)date('Y') ? 'selected' : '' ?>>
+                            <?= $a ?>
+                        </option>
+                    <?php endfor; ?>
+                </select>
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">
@@ -36,6 +42,8 @@ $historico = [
         </form>
     </div>
 </div>
+
+<div id="mensagemErroHistorico" class="alert alert-danger d-none"></div>
 
 <!-- Tabela de histórico -->
 <div class="card">
@@ -51,24 +59,10 @@ $historico = [
                         <th>Saída</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if (empty($historico)): ?>
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                Nenhum registro encontrado para o período selecionado.
-                            </td>
-                        </tr>
-                    <?php else: ?>
-                        <?php foreach ($historico as $dia): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($dia['data']) ?></td>
-                                <td><?= htmlspecialchars($dia['entrada']) ?></td>
-                                <td><?= htmlspecialchars($dia['inicio_intervalo']) ?></td>
-                                <td><?= htmlspecialchars($dia['fim_intervalo']) ?></td>
-                                <td><?= htmlspecialchars($dia['saida']) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                <tbody id="corpoTabelaHistorico">
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Carregando...</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

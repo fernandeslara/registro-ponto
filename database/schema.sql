@@ -1,6 +1,3 @@
-CREATE DATABASE pontofacil_db;
-
-USE pontofacil_db;
 
 CREATE TABLE usuarios(
     id INT AUTO_INCREMENT PRIMARY KEY,
