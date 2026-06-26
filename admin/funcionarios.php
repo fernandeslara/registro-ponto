@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0"><i class="bi bi-people"></i> Funcionários</h3>
-    <a href="<?= BASE_URL ?>/admin/cadastrar.php" class="btn btn-primary">
+    <a href="<?= BASE_URL ?>/admin/editar.php" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Funcionário
     </a>
 </div>
